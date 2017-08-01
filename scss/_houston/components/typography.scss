@@ -1,0 +1,253 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****             TYPOGRAPHY              ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  All the basic type styles for any web project. Pretty straight forward stuff.
+//
+//  [_1_] BASE STYLES
+//  [_2_] LISTS
+//  [_3_] QUOTES & BLOCKQUOTES
+//  [_4_] PREFORMATTED TEXT
+//  [_5_] TYPOGRAPHIC EXTRAS
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_1_] BASE STYLES
+
+//  First our basic font stack is styled with the font settings from '_config.scss'.
+//  An important part of this is to set the global font size at 62.5% as this makes
+//  the math easier, so that 1rem = 10px.
+
+%font-stack {
+  font-family: $default-font;
+  font-size: 62.5%;  // Important for the math to work.
+  color: color($default_text_color);
+
+  @include bp(lap) { font-size: 67.5%; }
+  @include bp(portable) { font-size: 72.5%; }
+  @include bp(desk) { font-size: 77.5%; }
+}
+
+//  The <html> must use our font stack so that when we set the <body> font size
+//  rem and pixel units match up.
+
+html { @extend %font-stack; }
+
+body {
+  @include font-size(0);
+
+  &.baseline {
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0) 95%, rgba(56,255,255,.5) 100%);
+	  background-size: 100% rhythm();
+	  background-position: 0 0;
+  }
+}
+
+// Font family classes
+@each $name, $font in $font_stack {
+  .ff--#{$name} { font-family: font-stack($name); }
+}
+
+// Font size classes
+@each $name, $size in $font_sizes {
+  .fs--#{$name} { @include font-size($size); }
+}
+
+// Heading elements
+@each $name, $size in $heading_sizes {
+  #{$name} { @include font-size(element-size($size)); }
+}
+
+.text--left   { text-align: left; }
+.text--center { text-align: center; }
+.text--right  { text-align: right; }
+
+p:not(:last-child) { margin-bottom: rhythm(); }
+
+em, i, .text--italic { font-style: italic; }
+b, strong, .text--bold { font-weight: bold; }
+s, strike, del, .text--strike { text-decoration: line-through; }
+u, .text--underline { text-decoration: underline; }
+
+a {
+  color: color($default_link_color);
+  transition: color 0.3s ease;
+
+  &:hover { color: darken(color($default_link_color), 18); }
+}
+
+//  Rhythm classes
+$cont-i: 0;
+
+@each $name, $multiple in $rhythm_multiples {
+  $cont-i: $cont-i + 1;
+  $ext: null;
+
+  @if $cont-i != 1 {
+    $ext: '--' + $name;
+  }
+
+  .rhythm-ma#{$ext} { margin: rhythm($multiple); }
+  .rhythm-pa#{$ext} { padding: rhythm($multiple); }
+
+  .rhythm-mv#{$ext} {
+    margin-top: rhythm($multiple);
+    margin-bottom: rhythm($multiple);
+  }
+
+  .rhythm-pv#{$ext} {
+    padding-top: rhythm($multiple);
+    padding-bottom: rhythm($multiple);
+  }
+
+  .rhythm-mh#{$ext} {
+    margin-left: rhythm($multiple);
+    margin-right: rhythm($multiple);
+  }
+
+  .rhythm-ph#{$ext} {
+    margin-left: rhythm($multiple);
+    margin-right: rhythm($multiple);
+  }
+
+  $directions: (
+    top: t,
+    bottom: b,
+    left: l,
+    right: r,
+  );
+
+  @each $direction, $letter in $directions {
+    .rhythm-m#{$letter}#{$ext} { margin-#{$direction}: rhythm($multiple); }
+    .rhythm-p#{$letter}#{$ext} { padding-#{$direction}: rhythm($multiple); }
+  }
+}
+
+// border thicknesses
+.border--thin  {
+  border-style: solid;
+  border-width: 0.1rem;
+}
+
+.border--mid   {
+  border-style: solid;
+  border-width: 0.2rem;
+}
+
+.border--thick {
+  border-style: solid;
+  border-width: 0.4rem;
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_2_] LISTS
+
+//  By default lists are styled with discs for <ul> and numericals for <ol>. These
+//  can be overwritten with the 'list--unstyled' and 'list--inline' modifiers, both
+//  of which remove the list style type altogether.
+
+ul, ol {
+  margin-left: 20px;
+
+  &.list--unstyled {
+    list-style: none;
+    margin-left: 0;
+  }
+
+  &.list--inline {
+    list-style: none;
+    margin-left: 0;
+
+    li {
+      display: inline-block;
+      margin-right: 20px;
+    }
+  }
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_3_] QUOTES & BLOCKQUOTES
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+blockquote {
+  margin-left: 0;
+  text-align: center;
+  height: auto;
+  @include font-size(1);
+}
+
+cite {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+
+  @include font-size(-1);
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_4_] PREFORMATTED TEXT
+
+code, pre {
+  @include font-size(-1);
+
+  @if map-has-key($font_stack, mono) {
+    font-family: font-stack(mono);
+  }
+
+  color: lighten(color($default_text_color), 20);
+  border: 1px solid;
+  border-radius: 2px;
+}
+
+code { padding: 1px 4px; }
+
+pre {
+  padding: rhythm(0.25) rhythm(0.5);
+  max-width: 100%;
+  overflow-x: scroll;
+  margin-bottom: rhythm(1.25);
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_5_] TYPOGRAPHIC EXTRAS
+
+//  <hr> isn't really a typographic element, but it's nice to have all the same.
+
+hr {
+  margin: 50px 80% 50px 0;
+  border: 0;
+  background: color($default_text_color);
+  height: 2px;
+}
+
+//  Controls the highlight color of text in the browser. Doesn't work everywhere.
+
+::selection { background: lighten(color($default_link_color), 40); }
+::-moz-selection { background: lighten(color($default_link_color), 40); }
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //

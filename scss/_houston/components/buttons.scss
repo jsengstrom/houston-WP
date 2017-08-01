@@ -1,0 +1,93 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****               BUTTONS               ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  There are three basic button styles; regular (.btn), ghost (.btn--ghost)
+//  and rounded (.btn--round), as well as three modifiers: large (.btn--large),
+//  small (.btn--small) and block (.btn--block). These can be combined to
+//  produce a range of different outcomes.
+//
+//  Default buttons use the default button color, however any color from the map
+//  can be used by adding the class: .btn--{color}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+.btn {
+  background: color($default_button_color);
+  color: color-contrast(color($default_button_color));
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 2px;
+  padding: 0.5em 1.5em;
+  transition: background 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: darken(color($default_button_color), 10);
+    color: color-contrast(color($default_button_color));
+  }
+}
+
+.btn--round {
+  border-radius: 100px;
+  padding: 0.5em 2em;
+
+  .btn--small { padding: 0.2em 1.5em; }
+}
+
+.btn--ghost {
+  background: none;
+  border: 2px solid color($default_button_color);
+  color: color($default_button_color);
+  transition: background 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background: color($default_button_color);
+    color: white;
+  }
+
+  @each $name, $color in $colors {
+    &.btn--#{$name} {
+      border: 2px solid $color;
+      color: $color;
+      background: none;
+
+      &:hover {
+        background: $color;
+        color: color-contrast($color);
+      }
+    }
+  }
+}
+
+@each $name, $color in $colors {
+  .btn--#{$name} {
+    background: $color;
+    color: color-contrast($color);
+
+    &:hover {
+      background: darken($color, 10);
+      color: color-contrast($color);
+    }
+  }
+}
+
+.btn--large {
+  @include font-size(1);
+}
+
+.btn--small {
+  @include font-size(-1);
+  padding: 0.2em 1em;
+}
+
+.btn--block {
+  display: block;
+  text-align: center;
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //

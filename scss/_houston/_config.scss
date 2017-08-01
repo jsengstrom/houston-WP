@@ -1,0 +1,204 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****           PROJECT CONFIG            ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  Think of this file as the project mothership. It contains all of the
+//  variables and values that get used over and over again in your CSS.
+//
+//  [_1_] TYPOGRAPHY
+//  [_2_] COLORS
+//  [_3_] GRID
+//  [_4_] BREAKPOINTS
+//  [_5_] PATHS
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_1_] TYPOGRAPHY  //
+
+//  Set your font stack here, calling families and their fallbacks as required.
+//  You are responsible for including the @font-face calls via your preferred
+//  method (personally I like to copy them directly to fonts.scss). The default
+//  font is the first in the list and there must be at least one.
+//
+//  Fonts within the map have the class '.ff--{key}' generated.
+
+$font_stack: (
+  base: #{'Verdana', sans-serif},
+  alt:  #{'Georgia', serif},
+  mono: #{'Monaco', monospace}
+);
+
+//  Font sizes are calculated using a typescale to produce better web typography
+//  (see http://webtypography.net/3.1.1 or http://www.modularscale.com for more).
+//  Common ratios include:
+//
+//  * 1.125 - major second
+//  * 1.333 - perfect fourth
+//  * 1.5   - perfect fifth
+//  * 1.618 - golden ratio
+
+$font_ratio: 1.25;
+
+//  Set the default type size for the site in rems. Units have been recalculated
+//  throughout the site so that 1rem == 10px. Set the global line height here in
+//  rems to preserve the baseline grid as best as possible.
+
+$font_base:  1.6;
+$line_height_base: 2;
+
+//  The vertical rhythm of the site becomes '$font_base' * '$line_height_base'
+//  These classes are produced in multiples as laid out in the map below (first
+//  element becomes default, so has no modifier). Classes generated:
+//  .rhythm-{m/p}a--{key} - all
+//  .rhythm-{m/p}v--{key} - vertical (top/bottom)
+//  .rhythm-{m/p}h--{key} - horizontal (left/right)
+//  .rhythm-{m/p}t--{key} - top
+//  .rhythm-{m/p}r--{key} - right
+//  .rhythm-{m/p}b--{key} - bottom
+//  .rhythm-{m/p}l--{key} - left
+
+$rhythm_multiples: (
+  base: 1,
+  half: 0.5,
+  double: 2,
+  huge: 4
+);
+
+//  Set font sizes below, each generates a class '.fs--{key}'. The value here
+//  refers to it's position on the type scale.
+
+$font_sizes: (
+  1: 4,
+  2: 3,
+  3: 2,
+  4: 1,
+  5: 0,
+  6: -1
+);
+
+// Set default sizes for each heading element here, from the above map. Note,
+// that a heading with a class of '.fs--{key}' will override the size here.
+
+$heading_sizes: (
+  h1: 1,
+  h2: 2,
+  h3: 3,
+  h4: 4,
+  h5: 5,
+  h6: 5,
+);
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_2_} COLORS  //
+
+//  Project colors are specified here. Add and remove colors to the map as
+//  required. First item is default.
+//
+//  Colors have three classes generated, and also a button modifier:
+//
+//  .color--{key} = applies text color
+//  .bg--{key} = applies background color
+//  .border--{key} = applies border color
+//  .btn--{key} = applies background color with calculated contrasting text color
+
+$colors: (
+  primary:    #B79A6F,
+  secondary:  #9BC1BC,
+  accent:     #ED6A5A,
+  neutral:    #DBD9DD,
+  dark:       #595959,
+);
+
+//  Set the key element colors below, using the key from the list above.
+
+$default_text_color:   dark;
+$default_link_color:   primary;
+$default_button_color: primary;
+
+//  Notification colors often don't appear elsewhere in the site, so have been
+//  spearated into the below map. Each key generates '.notification--{key}'.
+//  If you wanted to utilise one of the colors above in a DRY way, reference the
+//  map like so: @return map-get($colors, {key})
+
+$notifications: (
+  failed:    #BE4C4C,
+  warning:   #EAC282,
+  success:   #8CC36E
+);
+
+//  If enabled with the project's javascript, a EU compliant cookie banner is
+//  shown to users. Reference the key from the notifications map above to set
+//  the color of this banner. set this to null to remove cookie banner.
+
+$cookie_banner_color: warning;
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_3_] BREAKPOINTS  //
+
+//  Set the units by which horizontal elements are measured. This includes
+//   gutters, containers and breakpoints. By default this is set to ems.
+//
+//  Remember, 1em == 10px
+
+$h_units: em;
+
+//  Breakpoint values are used for both the media queries mixin and the grid
+//  system. The map below sets out the available media queries, with a positive
+//  number creating a min-width query and a negative number a max-width one.
+
+$breakpoints: (
+  palm:     -49.9,
+  lap:      50,
+  portable: 80,
+  desk:     110
+);
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_3_] GRID  //
+
+//  Set the default gutter width via the setting below (uses $h_units).
+
+$grid_gutter: 1.6;
+
+//  Set the default column width via the setting below (uses $h_units).
+
+$grid_col: 10;
+
+//  The grid system leaves a number of flexbox mixins available for use (read
+//  through base/grid.scss) to learn more. Here you can set any default grid
+//  patterns as required (common layouts have been provided).
+//
+//  This map produces the class: .grid--{key}
+//
+//  Syntax: key, (default: 'col_pattern', bp: 'bp_col_pattern', ...), stretch
+
+$set_grids: (
+  (thirds, (default: '1', lap: '1/2', portable: '1/3'), 0),
+  (quarters, (default: '1', lap: '1/2', portable: '1/4'), 0),
+  (aside, (default: '1', portable: (1: '2/3', 2: '1/3')), 0),
+);
+
+//  Containers set within the map below are based on the $h_unit measurement
+//  First item becomes default. The following class is generated:
+//
+//  .container--{key} = applies max width (base == '.container')
+
+$containers: (
+  base:  80,
+  small: 60,
+  large: 100,
+);
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //

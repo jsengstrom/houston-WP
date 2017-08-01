@@ -1,0 +1,39 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****             CONTAINERS              ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  The '.container' class centers the content within the <body> (or another
+//  parent element) and restrict it to a maximum width. Container widths are
+//  set within a map in `config.scss`.
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+%containers {
+  margin: 0 auto;
+  width: 80%;
+}
+
+$cont-i: 0;
+
+@each $name, $container in $containers {
+  $cont-i: $cont-i + 1;
+
+  @if $cont-i == 1 {
+
+    .container {
+      @extend %containers;
+      max-width: $container + $h_units;
+    }
+
+  } @else {
+
+    .container--#{$name} {
+      @extend %containers;
+      max-width: $container + $h_units;
+    }
+
+  }
+}

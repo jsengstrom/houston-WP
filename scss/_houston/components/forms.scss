@@ -1,0 +1,80 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****                FORMS                ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  Adds basic styling to forms and form elements (inputs, buttons etc).
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+input[type="text"], input[type="password"],
+input[type="email"], input[type="search"],
+input[type="number"], input[type="file"],
+input[type="tel"], input[type="url"],
+textarea, select {
+  @include font-size(0);
+
+  font-family: $default-font;
+  width: 100%;
+  padding: 0.5em 1em;
+  border-radius: 2px;
+  margin-bottom: rhythm(0.5);
+  position: relative;
+  z-index: 2;
+  background: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: color($default_text_color);
+  border: 1px solid color($default_text_color);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+textarea {
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 200px;
+}
+
+select {
+  box-shadow: none;
+  position: relative;
+  z-index: 2;
+
+  &:focus { outline: none; }
+}
+
+//  <radio> and <checkbox> elements are best styled within a list element to make
+//  use of the default styles.
+//
+//  USAGE: <ul class="form__radio">
+//           <li><input type="radio"> Radio Label One</li>
+//           <li><input type="radio"> Radio Label Two</li>
+//         </ul>
+
+.form__radio, .form__checkboxes {
+  list-style: none;
+  margin-left: 0;
+  margin-bottom: rhythm(0.5);
+
+  &.list--inline li {
+    margin-right: rhythm(0.5);
+  }
+}
+
+//  Suggest using the `.btn--*` classes to improve the UI of form buttons
+
+input[type="button"], input[type="submit"], button {
+  &[class*='btn'] {
+    @include font-size(0);
+
+    font-family: font-stack(base);
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border:none;
+  }
+}

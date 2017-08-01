@@ -1,0 +1,294 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****               MIXINS                ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  If you wish, you can install additional mixin libraries, such as Compass
+//  or Bourbon into 'global.scss' without worrying about clashes.
+//
+// [_1_] FONT SIZE
+// [_2_] MEDIA QUERIES
+// [_3_] POSITIONING
+// [_4_] SIZING
+// [_5_] VERTICAL ALIGN (extend)
+// [_6_] ABSOLUTE CENTER (extend)
+// [_7_] ASPECT RATIO
+// [_8_] MAP FUNCTIONS (function)
+// [_9_] RHYTHM (function)
+// [_10_] NUMBER ROUNDING (function)
+// [_11_] COLOR CONTRAST (function)
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_1_] FONT SIZE  //
+
+//  Set the font-size based on the type scale. If type scale feature is turned
+//  off, set the font size and (optionally) line height.
+//
+//  EXAMPLE ($use_type_scale: true): @include font-size(0);
+//  EXAMPLE ($use_type_scale: false): @include font-size(1.6, 2.4);
+
+@mixin font-size($size, $height : null) {
+  $line_height_base: $font_base * $line_height_base;
+
+  @if $size < 0 {
+
+    $calc: (1 / pow($font_ratio, -($size) )) * $font_base;
+    font-size: to-fixed($calc, 3)  + rem;
+    line-height: $line_height_base + rem;
+
+  } @else if $size == 0 {
+
+    font-size: $font_base  + rem;
+    line-height: $line_height_base + rem;
+
+  } @else {
+
+    $calc: pow($font_ratio, $size) * $font_base;
+
+    $height: $line_height_base;
+    $n: 1;
+
+    @if $height < ($calc * 1.125) {
+      @while $height < ($calc * 1.125) {
+        $n: $n + 1;
+
+        $height: $line_height_base * $n;
+      }
+    }
+
+    $fixed_size: to-fixed($calc, 3);
+
+    font-size: $fixed_size + rem;
+    line-height: $height + rem;
+  }
+}
+
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_2_] MEDIA QUERIES  //
+
+//  Write media queries inline using one the breakpoints from the map specified
+//  in the config file.
+//
+//  EXAMPLE: @include bp(lap) { ... }
+
+@mixin bp($point) {
+  $num: map-get($breakpoints, $point);
+
+  @if $num < 0 {
+    @media (max-width: (-($num) + $h_units)) { @content; }
+  } @else {
+    @media (min-width: ($num + $h_units)) { @content; }
+  }
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_3_] POSITIONING  //
+
+//  State the position type and arguments all in one line. The position type
+//  becomes the mixin name.
+//
+//  EXAMPLE: @include absolute(top 50% left 50%)
+
+@mixin pos($position, $args) {
+  position: $position;
+  $offsets: top right bottom left;
+
+  @each $o in $offsets {
+    $i: index($args, $o);
+
+    @if $i
+      and $i + 1 <= length($args)
+      and type-of( nth($args, $i + 1) ) == number {
+      #{$o}: nth($args, $i + 1);
+    }
+  }
+}
+
+@mixin absolute($args) {
+  @include pos(absolute, $args);
+}
+
+@mixin fixed($args) {
+  @include pos(fixed, $args);
+}
+
+@mixin relative($args) {
+  @include pos(relative, $args);
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_4_] SIZING
+
+//  A tiny mixin for specifying an element's size in one line. Leave the height
+//  value out if it is the same as the width.
+//
+//  EXAMPLE: @include size(80%, 40%);
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_5_] VERTICAL ALIGN (extend)
+
+%va, %vertical-align {
+  position: relative;
+  top:50%;
+  transform: translateY(-50%);
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_6_] ABSOLUTE CENTER (extend)
+
+%ac, %absolute-center {
+  position: absolute;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_7_] ASPECT RATIO
+
+// Adds a fixed aspect ratio to an element - specify width and height
+
+// Example:
+
+//  .four-three{
+//    @include aspect-ratio(4, 3);
+//   }
+
+@mixin aspect-ratio($width, $height) {
+    position: relative;
+    &:before {
+      display:block;
+      content: "";
+      width: 100%;
+      padding-top: 60%;
+    }
+    >.content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin-left: $gutter;
+      @include bp(palm) { margin-top: 4%;};
+      @include bp(lap) { margin-top: 4%;};
+      @include bp(portable) { margin-top: 0%;};
+      @include bp(desk) { margin-top: 0%;};
+    }
+
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_8_] MAP FUNCTIONS (function)
+
+//  Quick helpers for calling various map values from the config file
+
+//  Color
+@function color($color) {
+  @return map-get($colors, $color);
+}
+
+//  Font family
+@function font-stack($family) {
+  @return map-get($font_stack, $family);
+}
+
+//  Also create a default font family:
+$default-font: nth($font_stack, 1);
+$default-font: nth($default-font, 2);
+
+//  Element font size
+@function element-size($size) {
+  @return map-get($font_sizes, $size);
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_9_] RHYTHM (function)
+
+//  A tiny function that outputs a dimension in rem units, to help maintain the
+//  assigned baseline.
+
+@function rhythm($space: 1) {
+  @return #{($font_base * $line_height_base) * $space}rem;
+}
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_10_] NUMBER ROUNDING (function)
+
+//  This function will round numbers to a set level of decimal points. Due to
+//  limitations of Sass, the max number of decimals is 5.
+//
+//  EXAMPLE: to-fixed($number, 3);
+
+@function to-fixed($float, $digits: 2) {
+  $pow: pow(10, $digits);
+  @return round($float * $pow) / $pow;
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+// [_11_] COLOR CONTRAST (function)
+
+//  Two mixins that combined will work out the brightness of a color and in return
+//  output a contrasting one. Dark colors output white, light colours output the
+//  dark variable from the color map.
+//
+//  EXAMPLE: color-contrast($color);
+
+@function brightness($color) {
+  @return ((red($color) * .299) + (green($color) * .587) + (blue($color) * .114)) / 255 * 100%;
+}
+
+@function color-contrast($color, $dark: color($default_text_color), $light: white) {
+  @if $color == null {
+    @return null;
+  }
+  @else {
+    $color-brightness: brightness($color);
+    $light-text-brightness: brightness($light);
+    $dark-text-brightness: brightness($dark);
+
+    @return if(abs($color-brightness - $light-text-brightness) > abs($color-brightness - $dark-text-brightness), $light, $dark);
+  }
+}
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //

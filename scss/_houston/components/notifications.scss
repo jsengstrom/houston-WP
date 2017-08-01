@@ -1,0 +1,72 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****            NOTIFICATIONS            ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  The '.notification--{key}' class generates, as expected, a notification.
+//  This can be positioned to the top or bottom of the screen.
+//
+//  In the EU it is required by law for all websites to disclose any any cookies
+//  they are using in the form of an informational pop-up. This banner is is
+//  controlled with these notification styles (if enabled within the project js).
+//
+//  HTML EXAMPLE:
+//  <div class="notification--warning notification--top">
+//    <div class="container">
+//      <div class="notification__content font--small">Your notification message here</div>
+//    </div>
+//  </div>
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+[class*='notification--'] {
+  @include fixed(left 0);
+
+  width: 100%;
+  z-index: 10;
+
+  .notification__content {
+    padding: rhythm(0.25) rhythm(0.5);
+    border: 1px solid;
+    border-radius: 4px;
+  }
+}
+
+.notification--top { top: rhythm(); }
+.notification--bottom { bottom: rhythm(); }
+
+@each $name, $color in $notifications {
+  .notification--#{$name} .notification__content {
+    color: darken($color, 20);
+    background: lighten(rgba($color, 0.9), 10);
+    border-color: $color;
+
+    a {
+      color: darken($color, 30);
+      text-decoration: underline;
+    }
+  }
+}
+
+//  Adding '.load-fadeout--{seconds}' to the notification will cause it to fade out
+//  after 4, 8 or 12 seconds.
+
+.load-fadeout--4 { animation: fadeOut forwards 1s 4s ease; }
+.load-fadeout--8 { animation: fadeOut forwards 1s 8s ease; }
+.load-fadeout--12 { animation: fadeOut forwards 1s 12s ease; }
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  99% { opacity: 0; }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+// set cookie banner color
+@if($cookie_banner_color) {
+  .notification--cookie { @extend .notification--#{$cookie_banner_color} }
+}

@@ -1,0 +1,27 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****               MANIFEST              ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  This manifest imports everything within houston into one place. Include this
+//  file at the beginning of your global project to make use of it's features
+//  throughout your project.
+
+@import "base/_critical.scss";
+@import "_config";
+
+@import "base/reset.scss";
+@import "base/mixins.scss";
+@import "base/css-grid.scss";
+@import "base/grid.scss";
+
+@import "components/containers.scss";
+@import "components/colors.scss";
+@import "components/typography.scss";
+@import "components/buttons.scss";
+@import "components/forms.scss";
+@import "components/notifications.scss";
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //

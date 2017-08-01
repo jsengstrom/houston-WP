@@ -1,0 +1,41 @@
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** *****           GLOBAL MANIFEST           ***** ***** *****  //
+//  ***** ***** *****                                     ***** ***** *****  //
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+//  This manifest imports all of the individual SCSS files together ready
+//  to compile into a single CSS file (/build/css/global.css).
+//
+//  [_1_] HOUSTON
+//  [_2_] PROJECT
+//    [_a_] COMPONENTS
+//    [_b_] LAYOUTS
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_1_] HOUSTON  //
+
+//  Houston controls everything from grids and measures to typography and color.
+//  Start by configuring the file `_houston/config.scss`.
+
+@import "_houston/manifest.scss";
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+
+
+//  [_2_] PROJECT  //
+
+//  These are the files that make up the individual project. They can make use
+//  of any libraries imported above (mixins, grids, variables, maps etc).
+//
+//  COMPONENTS: Small elements (eg. forms, header, footer etc)
+//  LAYOUTS: Larger layouts (eg. sections, pages, modules)
+
+@import "_imports";
+
+
+//  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //

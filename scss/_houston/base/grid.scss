@@ -1,0 +1,167 @@
+// //  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+// //  ***** ***** *****                                     ***** ***** *****  //
+// //  ***** ***** *****                GRID                 ***** ***** *****  //
+// //  ***** ***** *****                                     ***** ***** *****  //
+// //  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//
+// //  A flexbox grid system. For best browser support you'll need Autoprefixer
+// //  (https://github.com/postcss/autoprefixer)
+// //
+// //  To learn more about flexbox: https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+// //  & https://philipwalton.github.io/solved-by-flexbox/demos/grids/
+// //
+// //  [_1_] SETUP
+// //  [_2_] WIDTHS
+// //  [_3_] MIXIN
+// //  [_4_] SET GRIDS
+//
+//
+// //  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//
+//
+// //  [_1_] SETUP  //
+//
+// //  Initiate a grid by wrapping your columns with a `.grid` container. Child
+// //  elements then become columns. By default these columns will wrap to fit
+// //  the entire width of the grid, honoring the `$grid_col` setting in the
+// //  config file.
+//
+// .grid {
+//   display: flex;
+//   flex-wrap: wrap;
+//   margin-left: -($grid_gutter + $h_units);
+//
+// 	> * {
+// 	  flex: 1 0 ($grid_col + $h_units);
+// 	  padding-left: ($grid_gutter + $h_units);
+// 	  margin-bottom: ($grid_gutter + $h_units);
+// 	}
+// }
+//
+//
+// //  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//
+//
+// //  [_2_] WIDTHS  //
+//
+// //  Because we're all lazy at heart, this allows us to specify column widths as
+// //  fractions rather than percentages. ;)
+//
+// $column-widths: (
+//   '1':   100%,
+//
+//   '1/2': 50%,
+//
+//   '1/3': 33.333%,
+//   '2/3': 66.666%,
+//
+//   '1/4': 25%,
+//   '2/4': 50%,
+//   '3/4': 75%,
+//
+//   '1/5': 20%,
+//   '2/5': 40%,
+//   '3/5': 60%,
+//   '4/5': 80%,
+//
+//   '1/6': 16.666%,
+//   '2/6': 33.333%,
+//   '3/6': 50%,
+//   '4/6': 66.666%,
+//   '5/6': 83.333%,
+//
+//   '1/8': 12.5%,
+//   '2/8': 25%,
+//   '3/8': 37.5%,
+//   '4/8': 50%,
+//   '5/8': 62.5%,
+//   '6/8': 75%,
+//   '7/8': 87.5%,
+//
+//   '1/10': 10%,
+//   '2/10': 20%,
+//   '3/10': 30%,
+//   '4/10': 40%,
+//   '5/10': 50%,
+//   '6/10': 60%,
+//   '7/10': 70%,
+//   '8/10': 80%,
+//   '9/10': 90%,
+//
+//   '1/12':  8.333%,
+//   '2/12':  16.666%,
+//   '3/12':  25%,
+//   '4/12':  33.333%,
+//   '5/12':  41.666%,
+//   '6/12':  50%,
+//   '7/12':  58.333%,
+//   '8/12':  66.666%,
+//   '9/12':  75%,
+//   '10/12': 83.333%,
+//   '11/12': 91.666%
+// );
+//
+// @function fraction($width) {
+//   @return map-get($column-widths, $width);
+// }
+//
+//
+// //  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//
+//
+// //  [_3_] MIXIN  //
+//
+// //  To extend the functionality of a grid, update the flex value for each
+// //  column. For grids where columns are unequal, use nth-child logic to create
+// //  a pattern. The flexgrid mixin is there to help you do this (although the
+// //  easiest way to implement  grid is via the `set_grids` map in config).
+// //
+// //  There are two variables:
+// //
+// //  $width: one or multiple fractions corresponding to the `widths` map above.
+// //  This can take two forms:
+// //  	1. Where every column is the same, a single fraction, in quotes. eg: '1/3'
+// //    2. Where columns differ, a map where key = nth-child logic and value is
+// //			 the fraction. Eg: (1: '1/2', 2n+1: '1/4')
+// //
+// //	$stretch: BOOLEAN, controls whether the columns stretch to fill the entire
+// //  grid or stick to thier prescribed widths.
+//
+// @mixin flexgrid($width, $stretch: 1) {
+// 	@if (type-of($width) == map) {
+// 		@each $w in $width {
+// 			> *:nth-child(#{nth($w, 1)}) { flex: $stretch 0 fraction(nth($w, 2)); }
+// 		}
+// 	} @else {
+// 		> * { flex: $stretch 0 fraction($width); }
+// 	}
+// }
+//
+//
+// //  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
+//
+//
+// //  [_4_] SET GRIDS  //
+//
+// //  This system leaves only the `.grid` class open for use, however grid patterns
+// //  can be generated from the $set_grids map in the config file. This loop makes
+// //  use of the flexgrid mixin above.
+//
+// @if variable-exists(set_grids) {
+//   @each $grid in $set_grids {
+// 		.grid--#{nth($grid, 1)} {
+// 			@each $bp, $query in nth($grid, 2) {
+// 				@if($bp == default) {
+// 					@include flexgrid($query, nth($grid, 3));
+// 				} @else {
+// 					@include bp($bp) {
+// 						@include flexgrid($query, nth($grid, 3));
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+//
+//
+// //  ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****  //
